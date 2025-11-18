@@ -2,10 +2,16 @@
 
 // write code here
 const body = document.querySelector('tbody');
-const allRows = [...document.querySelectorAll('tbody tr')];
+const allRows = () => {
+  const rows = [...document.querySelectorAll('tbody tr')];
+
+  return rows;
+};
 
 body.addEventListener('click', (eve) => {
-  for (const r of allRows) {
+  const rows = allRows();
+
+  for (const r of rows) {
     if (r.classList.contains('active')) {
       r.classList.remove('active');
     }
@@ -55,6 +61,7 @@ let lastIndex = null;
 
 headers.forEach((header) => {
   header.addEventListener('click', () => {
+    const rows = allRows();
     const currentIndex = header.cellIndex;
 
     if (currentIndex !== lastIndex) {
@@ -63,20 +70,20 @@ headers.forEach((header) => {
 
     clickCount++;
 
-    if (allRows.length === 0) {
+    if (rows.length === 0) {
       return;
     }
 
     const index = currentIndex;
 
     if (clickCount === 1) {
-      sortRows(allRows, index, 1);
-      rowAppend(allRows);
+      sortRows(rows, index, 1);
+      rowAppend(rows);
     }
 
     if (clickCount === 2) {
-      sortRows(allRows, index, -1);
-      rowAppend(allRows);
+      sortRows(rows, index, -1);
+      rowAppend(rows);
 
       clickCount = 0;
     }
@@ -195,7 +202,7 @@ function pushNotification(type) {
   }, 2000);
 }
 
-button.addEventListener('click', () => {
+button.addEventListener('click', (eve) => {
   const inputs = [...document.querySelectorAll('input')];
 
   for (const input of inputs) {
@@ -232,6 +239,16 @@ button.addEventListener('click', () => {
   newCell(document.querySelector('[data-qa="position"]').value);
   newCell(document.querySelector('[data-qa="office"]').value);
   newCell(document.querySelector('[data-qa="age"]').value);
-  newCell(document.querySelector('[data-qa="salary"]').value);
+
+  newCell(
+    Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(document.querySelector('[data-qa="salary"]').value),
+  );
   pushNotification('success');
+
+  eve.preventDefault();
 });
