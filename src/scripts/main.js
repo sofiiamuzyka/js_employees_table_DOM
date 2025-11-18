@@ -19,7 +19,9 @@ body.addEventListener('click', (eve) => {
 
   const selectedRow = eve.target.closest('tr');
 
-  selectedRow.classList.add('active');
+  if (selectedRow !== null) {
+    selectedRow.classList.add('active');
+  }
 });
 
 function cellValue(row, columnIndex) {
@@ -202,7 +204,7 @@ function pushNotification(type) {
   }, 2000);
 }
 
-button.addEventListener('click', (eve) => {
+form.addEventListener('submit', (eve) => {
   const inputs = [...document.querySelectorAll('input')];
 
   for (const input of inputs) {
@@ -211,6 +213,12 @@ button.addEventListener('click', (eve) => {
 
       return;
     }
+  }
+
+  if (office.value.length === 0) {
+    pushNotification('error');
+
+    return;
   }
 
   if (document.querySelector('[data-qa="name"]').value.length < 4) {
