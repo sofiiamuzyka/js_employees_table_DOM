@@ -207,12 +207,6 @@ function pushNotification(type) {
 form.addEventListener('submit', (eve) => {
   const inputs = [...document.querySelectorAll('input')];
 
-  if (office.value.length === 0) {
-    pushNotification('error');
-
-    return;
-  }
-
   for (const input of inputs) {
     if (input.value.length === 0) {
       pushNotification('error');
@@ -220,6 +214,13 @@ form.addEventListener('submit', (eve) => {
       return;
     }
   }
+
+  if (office.value.length === 0) {
+    pushNotification('error');
+
+    return;
+  }
+
 
   if (document.querySelector('[data-qa="name"]').value.length < 4) {
     pushNotification('error');
